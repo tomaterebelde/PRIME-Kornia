@@ -75,15 +75,30 @@ class MaxEntropyColorJitterGenerator(RandomGeneratorBase):
             )
 
             # Sample random coefficients from a normal distribution of shape (batch_size, channels, k.shape[0])
-            coeffs = _adapted_rsampling((batch_shape[0], batch_shape[1], k.shape[0],), self.coeffs_sampler, same_on_batch)
-            
-            
+            coeffs = _adapted_rsampling(
+                (
+                    batch_shape[0],
+                    batch_shape[1],
+                    k.shape[0],
+                ),
+                self.coeffs_sampler,
+                same_on_batch,
+            )
+
         else:
             # Define k as a range of integers from 1 to k_max
             k = torch.arange(1, self.k_max + 1, device=_device)
 
             # Sample random coefficients from a normal distribution of shape (batch_size, channels, k_max)
-            coeffs = _adapted_rsampling((batch_shape[0], batch_shape[1], self.k_max,), self.coeffs_sampler, same_on_batch)
+            coeffs = _adapted_rsampling(
+                (
+                    batch_shape[0],
+                    batch_shape[1],
+                    self.k_max,
+                ),
+                self.coeffs_sampler,
+                same_on_batch,
+            )
         # Scale coefficients by the square root of sigma
         coeffs = coeffs * torch.sqrt(torch.tensor(sigma))
 

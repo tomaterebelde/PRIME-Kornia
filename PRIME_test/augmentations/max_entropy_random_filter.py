@@ -49,7 +49,9 @@ class MaxEntropyRandomFilter(IntensityAugmentationBase2D):
         same_on_batch: bool = False,
         keepdim: bool = False,
     ) -> None:
-        super().__init__(p=p, p_batch=p_batch, same_on_batch=same_on_batch, keepdim=keepdim)
+        super().__init__(
+            p=p, p_batch=p_batch, same_on_batch=same_on_batch, keepdim=keepdim
+        )
 
         self.kernel_size = kernel_size
         self.sigma_max = sigma_max

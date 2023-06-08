@@ -68,25 +68,29 @@ class GeneralizedPRIMEModuleGenerator(RandomGeneratorBase):
 
         # Sample the parameters
         ws = _adapted_rsampling(
-            (batch_shape[0],), self.dirichlet_sampler, same_on_batch = False
+            (batch_shape[0],), self.dirichlet_sampler, same_on_batch=False
         )
-        m = _adapted_rsampling((batch_shape[0],), self.beta_sampler, same_on_batch = False)[
-            ..., None, None
-        ]
+        m = _adapted_rsampling(
+            (batch_shape[0],), self.beta_sampler, same_on_batch=False
+        )[..., None, None]
         depth_idx = _adapted_rsampling(
             (batch_shape[0] * self.mixture_width,),
             self.depth_idx_sampler,
             same_on_batch,
         ).int()
-        
+
         if same_on_batch:
             for i in range(batch_shape[0]):
                 ws[i] = ws[0]
                 m[i] = m[0]
-            trans_idx = _adapted_rsampling((batch_shape[0]*self.mixture_width, ), self.trans_idx_sampler, same_on_batch).int()
+            trans_idx = _adapted_rsampling(
+                (batch_shape[0] * self.mixture_width,),
+                self.trans_idx_sampler,
+                same_on_batch,
+            ).int()
             trans_idx = trans_idx.repeat(self.depth, 1)
-        
-        else :
+
+        else:
             trans_idx = _adapted_rsampling(
                 (
                     self.depth,

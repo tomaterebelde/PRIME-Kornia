@@ -9,6 +9,7 @@ from PRIME.random_generator.prime_generator import GeneralizedPRIMEModuleGenerat
 
 from kornia.augmentation._2d.base import AugmentationBase2D
 
+
 class PRIMEAugModule(AugmentationBase2D):
     r"""
     Class to mix PRIME augmentations and to apply them to an input image.
@@ -46,7 +47,7 @@ class PRIMEAugModule(AugmentationBase2D):
     Output: tensor([[[[0.3314, 0.2377, 0.3564],
                       [0.2867, 0.2656, 0.2759],
                       [0.0641, 0.2470, 0.3021]]]])
-    
+
 
     .. note::
          This function internally uses :
@@ -60,16 +61,23 @@ class PRIMEAugModule(AugmentationBase2D):
             MaxEntropyColorJitter(k_max=5, sigma_max=0.005, same_on_batch=True),
             MaxEntropyRandomFilter(kernel_size=3, same_on_batch=True),
             MaxEntropyDiffeomorphism(
-                iT=1.0, jT=1.0, i_max=10.0, j_max=10.0, k_min=2, k_max=5, sigma_max=2.0, same_on_batch=True
+                iT=1.0,
+                jT=1.0,
+                i_max=10.0,
+                j_max=10.0,
+                k_min=2,
+                k_max=5,
+                sigma_max=2.0,
+                same_on_batch=True,
             ),
         ],
         mixture_width=3,
         mixture_depth=-1,
-        max_depth=3, 
-        p: float = 1., 
-        p_batch: float = 1., 
+        max_depth=3,
+        p: float = 1.0,
+        p_batch: float = 1.0,
         same_on_batch: bool = False,
-        keepdim: bool = False, 
+        keepdim: bool = False,
     ) -> None:
         super().__init__(
             p=p, p_batch=p_batch, same_on_batch=same_on_batch, keepdim=keepdim
@@ -151,7 +159,7 @@ class PRIMEAugModule(AugmentationBase2D):
         # Reformat the output image to match the input shape
         if self.preprocess is not None:
             image_aug = self.preprocess(image_aug)
-        
+
         image_aug = image_aug.reshape(
             self.mixture_width,
             input.shape[0],
@@ -166,5 +174,5 @@ class PRIMEAugModule(AugmentationBase2D):
             mixed = (1.0 - m) * self.preprocess(input) + m * mix
         else:
             mixed = (1.0 - m) * input + m * mix
-            
+
         return mixed

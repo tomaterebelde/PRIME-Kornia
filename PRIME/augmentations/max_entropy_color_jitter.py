@@ -10,6 +10,7 @@ from PRIME.random_generator.max_entropy_color_jitter_generator import (
 from einops import parse_shape, rearrange
 from opt_einsum import contract
 
+
 class MaxEntropyColorJitter(IntensityAugmentationBase2D):
     r"""Applies a random color transformation to a tensor image. This transform follows
     the theroetical framework of PRIME, maximizing the entropy of the output image.
@@ -56,13 +57,15 @@ class MaxEntropyColorJitter(IntensityAugmentationBase2D):
         k_max: int,
         sigma_max: float = 0.01,
         delta_bandwidth: Optional[float] = None,
-        sigma_min: float = 0.0, 
+        sigma_min: float = 0.0,
         p: float = 1.0,
         p_batch: float = 1.0,
         same_on_batch: bool = False,
         keepdim: bool = False,
     ) -> None:
-        super().__init__(p=p, p_batch=p_batch, same_on_batch=same_on_batch, keepdim=keepdim)
+        super().__init__(
+            p=p, p_batch=p_batch, same_on_batch=same_on_batch, keepdim=keepdim
+        )
 
         self.k_max = k_max
         self.sigma_max = sigma_max

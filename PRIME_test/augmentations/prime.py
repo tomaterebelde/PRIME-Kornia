@@ -9,6 +9,7 @@ from PRIME.random_generator.prime_generator import GeneralizedPRIMEModuleGenerat
 
 from kornia.augmentation._2d.base import AugmentationBase2D
 
+
 class PRIMEAugModule_Kornia(AugmentationBase2D):
     r"""
     Class to mix PRIME augmentations and to apply them to an input image.
@@ -51,16 +52,23 @@ class PRIMEAugModule_Kornia(AugmentationBase2D):
             MaxEntropyColorJitter(k_max=5, sigma_max=0.005, same_on_batch=True),
             MaxEntropyRandomFilter(kernel_size=3, same_on_batch=True),
             MaxEntropyDiffeomorphism(
-                iT=1.0, jT=1.0, i_max=10.0, j_max=10.0, k_min=2, k_max=5, sigma_max=2.0, same_on_batch=True
+                iT=1.0,
+                jT=1.0,
+                i_max=10.0,
+                j_max=10.0,
+                k_min=2,
+                k_max=5,
+                sigma_max=2.0,
+                same_on_batch=True,
             ),
         ],
         mixture_width=3,
         mixture_depth=-1,
-        max_depth=3, 
-        p: float = 1.,  # TODO : should allways be 1, no? No.
-        p_batch: float = 1.,  ##TODO : should allways be 1, no? No. 
-        same_on_batch: bool = False, #§TODO : Finish implementation of same_on_batch
-        keepdim: bool = False, #§TODO : Implementation of keepdim
+        max_depth=3,
+        p: float = 1.0,  # TODO : should allways be 1, no? No.
+        p_batch: float = 1.0,  ##TODO : should allways be 1, no? No.
+        same_on_batch: bool = False,  # §TODO : Finish implementation of same_on_batch
+        keepdim: bool = False,  # §TODO : Implementation of keepdim
     ) -> None:
         super().__init__(
             p=p, p_batch=p_batch, same_on_batch=same_on_batch, keepdim=keepdim
@@ -142,7 +150,7 @@ class PRIMEAugModule_Kornia(AugmentationBase2D):
         # Reformat the output image to match the input shape
         if self.preprocess is not None:
             image_aug = self.preprocess(image_aug)
-        
+
         image_aug = image_aug.reshape(
             self.mixture_width,
             input.shape[0],
@@ -155,5 +163,5 @@ class PRIMEAugModule_Kornia(AugmentationBase2D):
             mixed = (1.0 - m) * self.preprocess(input) + m * mix
         else:
             mixed = (1.0 - m) * input + m * mix
-            
+
         return mixed

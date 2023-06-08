@@ -96,14 +96,13 @@ class MaxEntropyDiffeomorphismGenerator(RandomGeneratorBase):
                 self.sigma_max,
             ]
         )
-       # Get image size from batch shape
+        # Get image size from batch shape
         n = batch_shape[-1]
 
         # Sample values for sigma, betacut, and betaT
         sigma = _adapted_rsampling((1,), self.sigma_sampler, same_on_batch).item()
         betacut = _adapted_rsampling((1,), self.betacut_sampler, same_on_batch).item()
         betaT = _adapted_rsampling((1,), self.betaT_sampler, same_on_batch).item()
-
 
         # Calculate temperature and cut values
         cut = betacut * (self.k_max + 1 - self.k_min) + self.k_min
@@ -113,7 +112,9 @@ class MaxEntropyDiffeomorphismGenerator(RandomGeneratorBase):
         T = betaT * (T2 - T1) + T1
         T = torch.tensor(T, dtype=torch.float)
 
-        coeffs = _adapted_rsampling((batch_shape[0], cut, cut), self.coeffs_sampler, same_on_batch)
+        coeffs = _adapted_rsampling(
+            (batch_shape[0], cut, cut), self.coeffs_sampler, same_on_batch
+        )
 
         return dict(
             T=T.to(device=_device, dtype=_dtype),

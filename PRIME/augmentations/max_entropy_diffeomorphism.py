@@ -42,7 +42,7 @@ class MaxEntropyDiffeomorphism(AugmentationBase2D):
     Input: tensor([[[0.4992, 0.2321, 0.5032],
                     [0.2303, 0.1012, 0.2237],
                     [0.4207, 0.6944, 0.0581]]])
-    
+
     Output: tensor([[[[0.4992, 0.2321, 0.5032],
                       [0.2303, 0.2962, 0.2237],
                       [0.4207, 0.6944, 0.0581]]]])
@@ -68,7 +68,9 @@ class MaxEntropyDiffeomorphism(AugmentationBase2D):
         same_on_batch=False,
         keepdim=False,
     ):
-        super().__init__(p=p, p_batch=p_batch, same_on_batch=same_on_batch, keepdim=keepdim)
+        super().__init__(
+            p=p, p_batch=p_batch, same_on_batch=same_on_batch, keepdim=keepdim
+        )
 
         self.iT = iT
         self.jT = jT
@@ -82,8 +84,6 @@ class MaxEntropyDiffeomorphism(AugmentationBase2D):
         self._param_generator = MaxEntropyDiffeomorphismGenerator(
             iT, jT, i_max, j_max, k_min, k_max, sigma_max
         )
-
-
 
     def apply_transform(
         self,
@@ -109,8 +109,8 @@ class MaxEntropyDiffeomorphism(AugmentationBase2D):
             padding_mode="border",
             normalized_coordinates=True,
             align_corners=False,
-        )    
-    
+        )
+
     def _get_diffeomorphism_scalar_field(self, input: Tensor, params: Dict):
         r"""
         Generates a Random Diffeomorphism vector field given the input tensor's size.
@@ -160,7 +160,6 @@ class MaxEntropyDiffeomorphism(AugmentationBase2D):
 
         return xn, yn
 
-
     def _scalar_field(self, n, cut, coeffs, device="cpu"):
         """
         Generates a random scalar field of size nxn made of the first m modes.
@@ -173,11 +172,12 @@ class MaxEntropyDiffeomorphism(AugmentationBase2D):
         Returns:
             (torch.Tensor): Random scalar field of size nxn.
         """
-        e, s = self._scalar_field_modes(n, cut, dtype=torch.get_default_dtype(), device=device)
+        e, s = self._scalar_field_modes(
+            n, cut, dtype=torch.get_default_dtype(), device=device
+        )
         c = coeffs * e
 
         return contract("bij,xi,yj->byx", c, s, s)
-
 
     def _scalar_field_modes(self, n, cut, dtype=torch.float64, device="cpu"):
         """

@@ -86,16 +86,19 @@ class MaxEntropyRandomFilterGenerator(RandomGeneratorBase):
 
         # Sample the parameters
         sigma = _adapted_rsampling((1,), self.sigma_sampler, same_on_batch).item()
-        coeffs = _adapted_rsampling((batch_shape[0], self.kernel_size, self.kernel_size,), self.coeffs_sampler, same_on_batch)
+        coeffs = _adapted_rsampling(
+            (
+                batch_shape[0],
+                self.kernel_size,
+                self.kernel_size,
+            ),
+            self.coeffs_sampler,
+            same_on_batch,
+        )
         delta = self._initialize_delta_filter(self.device)
 
-
         # Compute the convolution weights
-        conv_weight = (
-            sigma
-            * coeffs
-            + delta
-        )
+        conv_weight = sigma * coeffs + delta
         conv_weight = conv_weight.reshape(
             batch_shape[0], 1, self.kernel_size, self.kernel_size
         )
