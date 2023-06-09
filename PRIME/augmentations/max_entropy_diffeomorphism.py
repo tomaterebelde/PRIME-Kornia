@@ -13,10 +13,13 @@ from kornia.geometry.transform import remap
 
 
 class MaxEntropyDiffeomorphism(AugmentationBase2D):
-    r"""
-    Applies a random spatial transformation to a tensor image. This transform follows
-    the theroetical framework of PRIME, maximizing the entropy of the output image.
-    To read more about the theory behind this transformation, please refer to the paper
+    r"""Apply a maximum entropy random diffeomorphism to a tensor image.
+
+    This is one of the three base transformations that defines PRIME. The strength of
+    the transformation is controlled by the parameter :math:`\sigma_{max}` and its
+    smoothness in the spatial domain by :math:`k_{max}` and :math:`k_{min}`.
+
+    You can find the formal definition in:
     `PRIME: A Few Primitives Can Boost Robustness to Common Corruptions <https://arxiv.org/abs/2112.13547>`.
 
     Args:
@@ -26,31 +29,21 @@ class MaxEntropyDiffeomorphism(AugmentationBase2D):
         j_max (float): The maximum displacement along the x-axis for each control point.
         k_min (float): The minimum value of the smoothing kernel standard deviation.
         k_max (float): The maximum value of the smoothing kernel standard deviation.
-        sigma_max (float): The maximum value of the standard deviation of the random displacement field.
+        sigma_max (float): The maximum strength of the transformation.
         p (float): Probability of applying the transformation. Default: 1.0.
         p_batch (float): Probability of applying the transformation to a batch of tensors. Default: 1.0.
         interpolation (str): Interpolation mode to calculate output values. Default: 'bilinear'.
 
     Returns:
-        The randomly spatialy transformed input tensor.
+        The defformed input tensor.
 
     Shape:
         - Input: math:`(C, H, W)` or :math:`(B, C, H, W)`
         - Output: :math:`(B, C, H, W)`
 
-    Examples: -
-    Input: tensor([[[0.4992, 0.2321, 0.5032],
-                    [0.2303, 0.1012, 0.2237],
-                    [0.4207, 0.6944, 0.0581]]])
-
-    Output: tensor([[[[0.4992, 0.2321, 0.5032],
-                      [0.2303, 0.2962, 0.2237],
-                      [0.4207, 0.6944, 0.0581]]]])
-
     .. note::
         This function internally uses :
             func:`MaxEntropyDiffeomorphismGenerator`
-
     """
 
     def __init__(

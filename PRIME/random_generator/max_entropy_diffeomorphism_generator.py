@@ -15,13 +15,12 @@ __all__ = ["MaxEntropyDiffeomorphismGenerator"]
 
 
 class MaxEntropyDiffeomorphismGenerator(RandomGeneratorBase):
-    r"""This class generates the parameters for the Maximum Entropy Diffeomorphism class.
+    r"""Generates random MaximumEntropyDiffeomorphism parameters for a batch of images.
 
-    This transform follows the theroetical framework of PRIME,
-    maximizing the entropy of the output image.
-    To read more about the theory behind this transformation, please refer to the paper
+    Sampling is performed according to the distribution proposed in:
     `PRIME: A Few Primitives Can Boost Robustness to Common Corruptions <https://arxiv.org/abs/2112.13547>`.
-
+    and
+    `Relative stability toward diffeomorphisms indicates performance in deep nets <https://arxiv.org/abs/2105.02468>`.
 
     Args:
         iT (float): Temperature parameter for controlling the amount of diffeomorphism.

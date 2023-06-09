@@ -1,5 +1,5 @@
 from typing import Any, Dict, Optional
-from PRIME.random_generator.max_entropy_rand_filter_generator import (
+from PRIME.random_generator.max_entropy_random_filter_generator import (
     MaxEntropyRandomFilterGenerator,
 )
 
@@ -9,41 +9,34 @@ from kornia.core import Tensor
 
 
 class MaxEntropyRandomFilter(IntensityAugmentationBase2D):
-    r"""
-    Applies a random filtering transformation to a tensor image. This transform follows
-    the theroetical framework of PRIME, maximizing the entropy of the output image.
-    To read more about the theory behind this transformation, please refer to the paper
+    r"""Apply a maximum entropy spectral transformation to a tensor image.
+
+    This is one of the three base transformations that defines PRIME. The strength of
+    the transformation is controlled by the parameter :math:`\sigma_{max}` and its
+    smoothness in the frequency domain by :math:`kernel_size`.
+
+    You can find the formal definition in:
     `PRIME: A Few Primitives Can Boost Robustness to Common Corruptions <https://arxiv.org/abs/2112.13547>`.
 
-
     Args:
-        kernel_size (int): size of the kernel to convolve the input tensor with.
-        sigma_max (float): maximum value of the standard deviation to use on the transformation strength.
-        sigma_min (float): minimum value of the standard deviation to use on the transformation strength.
-        same_on_batch (bool): apply the same transformation across the batch.
-        p (float): probability of applying the transformation.
-        keepdim (bool): determines whether the output tensor has the same size as the input tensor.
+        kernel_size (int): Size of the kernel to convolve the input tensor with. It controls the smoothness
+            of the transformation.
+        sigma_max (float): Maximum strength of the transformation.
+        sigma_min (float): Minimum strength of the transformation.
+        same_on_batch (bool): Apply the same transformation across the batch.
+        p (float): Probability of applying the transformation.
+        keepdim (bool): Determines whether the output tensor has the same size as the input tensor.
 
     Returns:
-        Tensor: Filtered tensor image.
+        The randomly filtered input tensor.
 
     Shape:
         - Input: math:`(C, H, W)` or :math:`(B, C, H, W)`
         - Output: :math:`(B, C, H, W)`
 
-    Examples: -
-    Input: tensor([[[0.9663, 0.9385, 0.0160],
-                    [0.3854, 0.6294, 0.0780],
-                    [0.8543, 0.1722, 0.4978]]])
-
-    Output: tensor([[[[1.0000, 1.0000, 0.5302],
-                    [1.0000, 1.0000, 0.0000],
-                    [1.0000, 1.0000, 0.0000]]]])
-
     .. note::
         This function internally uses :
             func:`MaxEntropyRandomFilterGenerator`
-
     """
 
     def __init__(
@@ -66,7 +59,7 @@ class MaxEntropyRandomFilter(IntensityAugmentationBase2D):
 
         self._param_generator = MaxEntropyRandomFilterGenerator(
             kernel_size, sigma_max, sigma_min
-        )  # This will generate the parameters for the augmentation
+        )
 
     def apply_transform(
         self,

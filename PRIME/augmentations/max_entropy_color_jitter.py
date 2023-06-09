@@ -12,20 +12,25 @@ from opt_einsum import contract
 
 
 class MaxEntropyColorJitter(IntensityAugmentationBase2D):
-    r"""Applies a random color transformation to a tensor image. This transform follows
-    the theroetical framework of PRIME, maximizing the entropy of the output image.
-    To read more about the theory behind this transformation, please refer to the paper
+    r"""Apply a maximum entropy random color jitter transformation to a tensor image.
+
+    This is one of the three base transformations that defines PRIME. The strength of
+    the transformation is controlled by the parameter :math:`\sigma_{max}` and its
+    smoothness in the color space by :math:`k_{max}`. T
+
+    You can find the formal definition in:
     `PRIME: A Few Primitives Can Boost Robustness to Common Corruptions <https://arxiv.org/abs/2112.13547>`.
 
 
     Args:
-        k_max (int): maximum number of frequency components to be used.
-        sigma_max (float): maximum standard deviation of the strength distribution.
-        delta_bandwidth (float): bandwidth of the delta function.
-        sigma_min (float): minimum standard deviation of the strength distribution.
-        same_on_batch (bool): apply the same transformation across the batch.
-        p (float): probability of applying the transformation.
-        keepdim (bool): determines whether the output tensor has the same size as the input tensor.
+        k_max (int): Highest frequency component that defines the smoothness of the transformation.
+        sigma_max (float): Maximum strength of the transformation.
+        delta_bandwidth (float): Number of consecutive frequency components that define the transformation.
+            If None, the bandwidth is set to k_max.
+        sigma_min (float): Minimum strength of the transformation.
+        same_on_batch (bool): Apply the same transformation across the batch.
+        p (float): Probability of applying the transformation.
+        keepdim (bool): Determines whether the output tensor has the same size as the input tensor.
 
     Returns:
         Tensor: Color jittered tensor image.
@@ -34,22 +39,9 @@ class MaxEntropyColorJitter(IntensityAugmentationBase2D):
         - Input: :math:`(C, H, W)` or :math:`(B, C, H, W)`,
         - Output: :math:`(B, C, H, W)`
 
-    Examples: -
-    Input: tensor([[[0.0300, 0.5621, 0.2712],
-                    [0.7816, 0.3524, 0.1738],
-                    [0.0613, 0.4685, 0.6536]]])
-
-    Output: tensor([[[[0.0000, 0.6507, 0.6092],
-                      [0.9237, 1.0000, 0.2487],
-                      [0.0000, 1.0000, 0.0000]]]])
-
     .. note::
         This function internally uses :
         func:`MaxEntropyColorJitterGenerator`
-
-
-
-
     """
 
     def __init__(

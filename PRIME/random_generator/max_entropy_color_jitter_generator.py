@@ -14,17 +14,16 @@ __all__ = ["MaxEntropyColorJitterGenerator"]
 
 
 class MaxEntropyColorJitterGenerator(RandomGeneratorBase):
-    r"""This class generates the parameters for the Maximum Entropy Color Jitter class.
+    r"""Generates random MaximumEntropyColorJitter parameters for a batch of images.
 
-    This transform follows the theroetical framework of PRIME,
-    maximizing the entropy of the output image.
-    To read more about the theory behind this transformation, please refer to the paper
+    Sampling is performed according to the distribution proposed in:
     `PRIME: A Few Primitives Can Boost Robustness to Common Corruptions <https://arxiv.org/abs/2112.13547>`.
 
     Args:
         k_max (int): Maximum number of frequency components to be used.
         sigma_max (float): Maximum standard deviation of the strength distribution.
-        delta_bandwith (Optional[int]): Bandwidth of the delta function. Defaults to None.
+        delta_bandwith (Optional[int]): Number of consecutive frequency components
+            that define the transformation. If None, the bandwidth is set to k_max.
         sigma_min (float): Minimum standard deviation of the strength distribution. Defaults to 0.0.
 
     Returns:
