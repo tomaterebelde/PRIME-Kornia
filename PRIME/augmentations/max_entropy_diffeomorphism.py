@@ -21,6 +21,8 @@ class MaxEntropyDiffeomorphism(AugmentationBase2D):
 
     You can find the formal definition in:
     `PRIME: A Few Primitives Can Boost Robustness to Common Corruptions <https://arxiv.org/abs/2112.13547>`.
+    and
+    `Relative stability toward diffeomorphisms indicates performance in deep nets <https://arxiv.org/abs/2105.02468>`.
 
     Args:
         iT (float): The number of control points along the y-axis for the grid of the displacement field.
@@ -35,7 +37,7 @@ class MaxEntropyDiffeomorphism(AugmentationBase2D):
         interpolation (str): Interpolation mode to calculate output values. Default: 'bilinear'.
 
     Returns:
-        The defformed input tensor.
+        The spatially transformed input tensor.
 
     Shape:
         - Input: math:`(C, H, W)` or :math:`(B, C, H, W)`
